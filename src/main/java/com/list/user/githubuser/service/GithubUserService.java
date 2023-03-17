@@ -18,27 +18,29 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.list.user.githubuser.config.AppData;
 import com.list.user.githubuser.dto.GithubUser;
 import com.list.user.githubuser.util.HttpRequest;
 
 @Service
 public class GithubUserService {
-    private static final String GET_URL = "https://api.github.com/users?per_page=100";
-
     private HttpRequest httpRequest;
+    private AppData appData;
 
-    public GithubUserService(HttpRequest httpRequest) {
+    public GithubUserService(HttpRequest httpRequest, AppData appData) {
         this.httpRequest = httpRequest;
+        this.appData = appData;
     }
 
     public byte[] getGithubUser() throws IOException, JSONException, DocumentException {
         ObjectMapper mapper = new ObjectMapper();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer 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");
+        headers.put("Authorization", "Bearer " + appData.getGithubToken());
         headers.put("X-GitHub-Api-Version", "2022-11-28");
-
-        String response = httpRequest.get(headers, GET_URL);
+        System.out.println("GITHUB URL -> " + headers);
+        String response = httpRequest.get(headers, appData.getGithubUrl());
+        System.out.println("RESPONSE -> " + response);
 
         List<GithubUser> githubUsers = mapper.readValue(response.toString(),
                 new com.fasterxml.jackson.core.type.TypeReference<List<GithubUser>>() {

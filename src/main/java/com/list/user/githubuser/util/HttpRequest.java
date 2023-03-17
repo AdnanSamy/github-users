@@ -16,8 +16,8 @@ public class HttpRequest {
         URL obj = new URL(url);
         HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
         httpURLConnection.setRequestMethod("GET");
-        httpURLConnection.setRequestProperty("Authorization", "Bearer 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");
-        httpURLConnection.setRequestProperty("X-GitHub-Api-Version", "2022-11-28");
+        httpURLConnection.setRequestProperty("Authorization", header.get("Authorization"));
+        httpURLConnection.setRequestProperty("X-GitHub-Api-Version", header.get("X-GitHub-Api-Version"));
 
         int responseCode = httpURLConnection.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
